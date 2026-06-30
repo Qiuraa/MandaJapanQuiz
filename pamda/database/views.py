@@ -260,6 +260,8 @@ def result(request):
 
             "rate": progress["rate"]
 
+            ,"deck_id": session.deck.id
+
         }
 
     )

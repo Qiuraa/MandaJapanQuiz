@@ -5,7 +5,6 @@ from database.engine.progress_manager import ProgressManager
 from database.engine.mastery_calculator import MasteryCalculator
 
 from database.models import Vocabulary
-from pamda.database.views import result
 
 
 class QuizEngine:
@@ -77,7 +76,7 @@ class QuizEngine:
     def submit_answer(
         self,
         vocabulary_id,
-        selected_answers
+        selected_answer
     ):
 
         vocabulary = Vocabulary.objects.get(

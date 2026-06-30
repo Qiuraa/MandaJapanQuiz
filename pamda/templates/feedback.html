@@ -10,7 +10,7 @@ Feedback
 
 <div class="correct-box">
 
-    <h1>✅ Benar!</h1>
+    <h1>✅ Correct!</h1>
 
 </div>
 
@@ -18,7 +18,7 @@ Feedback
 
 <div class="wrong-box">
 
-    <h1>❌ Salah!</h1>
+    <h1>❌ Wrong!</h1>
 
 </div>
 
@@ -30,11 +30,11 @@ Feedback
 
         <div class="progress-card">
 
-            <strong>Soal Muncul</strong>
+            <strong>Shown</strong>
 
             <div>{{ feedback.shown }}/{{ feedback.total }}</div>
 
-            <div>{{ feedback.shown }} soal sudah keluar</div>
+            <div>{{ feedback.shown }} items shown</div>
 
         </div>
 
@@ -46,11 +46,11 @@ Feedback
 
             <div>
                 {% if feedback.can_next_stage %}
-                    ✅ Siap lanjut ke stage berikutnya
+                    ✅ Ready to advance to the next stage
                 {% elif feedback.pending == 0 %}
-                    ⚠️ Butuh mastery di atas 70%
+                    ⚠️ Need mastery above target
                 {% else %}
-                    ⏳ {{ feedback.pending }} soal belum selesai
+                    ⏳ {{ feedback.pending }} items pending
                 {% endif %}
             </div>
 
@@ -68,7 +68,7 @@ Feedback
 
     <div class="section">
 
-        <h3>Jawaban Anda</h3>
+        <h3>Your Answer</h3>
 
         <p>
 
@@ -94,7 +94,7 @@ Feedback
 
     <div class="section">
 
-        <h3>Arti</h3>
+        <h3>Meaning</h3>
 
         <p>
 
@@ -105,17 +105,31 @@ Feedback
     </div>
 
     <form
+        id="continue-form"
         action="{% url 'next_question' %}"
         method="GET"
     >
 
-        <button>
+        <button
+            class="continue-button"
+            type="submit"
+        >
 
-            Lanjut
+            Continue
 
         </button>
 
     </form>
+
+    <script>
+        document.addEventListener("keydown", function (event) {
+            const form = document.getElementById("continue-form");
+            if (!form || form.dataset.submitted === "true") return;
+            if (["Escape", "Tab", "Shift", "Control", "Alt", "Meta"].includes(event.key)) return;
+            form.dataset.submitted = "true";
+            form.submit();
+        });
+    </script>
 
 </div>
 

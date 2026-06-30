@@ -16,11 +16,11 @@ Quiz
 
     <div class="progress-card">
 
-        <strong>Soal Muncul</strong>
+        <strong>Shown</strong>
 
         <div>{{ progress.shown }}/{{ progress.total }}</div>
 
-        <div>{{ progress.shown }} soal sudah keluar</div>
+        <div>{{ progress.shown }} items shown</div>
 
     </div>
 
@@ -32,11 +32,11 @@ Quiz
 
         <div>
             {% if can_next_stage %}
-                ✅ Siap lanjut ke stage berikutnya
+                ✅ Ready to advance to the next stage
             {% elif progress.pending == 0 %}
-                ⚠️ Butuh mastery di atas 70%
+                ⚠️ Need mastery above target
             {% else %}
-                ⏳ {{ progress.pending }} soal belum selesai
+                ⏳ {{ progress.pending }} items pending
             {% endif %}
         </div>
 
@@ -48,9 +48,9 @@ Quiz
 
 <div class="success-box">
 
-    🎉 Selamat!
+    🎉 Congratulations!
 
-    Anda berhasil membuka Stage {{ stage }}.
+    You unlocked Stage {{ stage }}.
 
 </div>
 

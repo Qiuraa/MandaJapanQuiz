@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+Result
+{% endblock %}
+
+{% block content %}
+
+<div class="result-card">
+
+	<h1>Study Results</h1>
+
+	<div class="stats">
+
+		<div class="stat">
+			<strong>Stage</strong>
+			<div>{{ stage }} / {{ total_stage }}</div>
+		</div>
+
+		<div class="stat">
+			<strong>Mastered</strong>
+			<div>{{ mastered }} / {{ total }}</div>
+		</div>
+
+		<div class="stat">
+			<strong>Mastery Rate</strong>
+			<div>{{ rate }}%</div>
+		</div>
+
+	</div>
+
+	<div class="actions">
+
+		<form action="{% url 'start_quiz' deck_id=deck_id %}" method="POST">
+			{% csrf_token %}
+			<button type="submit">Restart Deck</button>
+		</form>
+
+		<a href="{% url 'home' %}"><button>Home</button></a>
+
+	</div>
+
+</div>
+
+{% endblock %}
+
