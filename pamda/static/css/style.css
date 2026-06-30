@@ -8,15 +8,15 @@ body{
 
     font-family:Segoe UI,sans-serif;
 
-    background:#f5f7fb;
+    background:#1a1a2e;
 
-    color:#222;
+    color:#ffffff;
 
 }
 
 header{
 
-    background:#2563eb;
+    background:#0f1626;
 
     color:white;
 
@@ -32,13 +32,13 @@ main{
 
     margin:40px auto;
 
-    background:white;
+    background:#252d42;
 
     border-radius:12px;
 
     padding:30px;
 
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    box-shadow:0 5px 15px rgba(0,0,0,.3);
 
 }
 
@@ -70,13 +70,15 @@ button:hover{
 
 .deck-card{
 
-    border:1px solid #ddd;
+    border:1px solid #3d4556;
 
     border-radius:10px;
 
     padding:20px;
 
     margin-bottom:20px;
+
+    background:#2a3345;
 
 }
 
@@ -100,9 +102,9 @@ button:hover{
 
 .correct-box{
 
-    background:#dcfce7;
+    background:#1e4620;
 
-    color:#166534;
+    color:#86efac;
 
     padding:20px;
 
@@ -114,9 +116,9 @@ button:hover{
 
 .wrong-box{
 
-    background:#fee2e2;
+    background:#4a1f1f;
 
-    color:#991b1b;
+    color:#fca5a5;
 
     padding:20px;
 
@@ -136,7 +138,7 @@ button:hover{
 
     margin-bottom:10px;
 
-    color:#666;
+    color:#94a3b8;
 
 }
 
@@ -164,9 +166,9 @@ button:hover{
 
     min-width:220px;
 
-    border:1px solid #dbeafe;
+    border:1px solid #3d5580;
 
-    background:#eff6ff;
+    background:#1e2d4a;
 
     border-radius:10px;
 
@@ -192,11 +194,11 @@ button:hover{
 
     text-align:center;
 
-    border:1px solid #bfdbfe;
+    border:1px solid #3d5580;
 
-    background:#f8fbff;
+    background:#1e2d4a;
 
-    color:#1e3a8a;
+    color:#60a5fa;
 
     padding:16px 18px;
 
@@ -210,7 +212,9 @@ button:hover{
 
 .choice-button:hover{
 
-    background:#dbeafe;
+    background:#2a3f5f;
+
+    color:#93c5fd;
 
 }
 
