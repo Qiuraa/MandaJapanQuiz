@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<h2>Deck Vocabulary</h2>
+
+{% if decks %}
+
+    {% for deck in decks %}
+
+        <div class="deck-card">
+
+            <h3>{{ deck.name }}</h3>
+
+            <p>
+
+                {{ deck.vocabularies.count }}
+                Vocabulary
+
+            </p>
+
+            <a
+                href="{% url 'deck_detail' deck.id %}">
+
+                <button>
+
+                    Masuk
+
+                </button>
+
+            </a>
+
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>
+
+        Tidak ada deck.
+
+    </p>
+
+{% endif %}
+
+{% endblock %}

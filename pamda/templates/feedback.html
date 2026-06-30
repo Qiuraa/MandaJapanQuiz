@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}
+Feedback
+{% endblock %}
+
+{% block content %}
+
+{% if feedback.correct %}
+
+<div class="correct-box">
+
+    <h1>✅ Benar!</h1>
+
+</div>
+
+{% else %}
+
+<div class="wrong-box">
+
+    <h1>❌ Salah!</h1>
+
+</div>
+
+{% endif %}
+
+<div class="feedback-card">
+
+    <div class="progress-summary">
+
+        <div class="progress-card">
+
+            <strong>Soal Muncul</strong>
+
+            <div>{{ feedback.shown }}/{{ feedback.total }}</div>
+
+            <div>{{ feedback.shown }} soal sudah keluar</div>
+
+        </div>
+
+        <div class="progress-card">
+
+            <strong>Mastery</strong>
+
+            <div>{{ feedback.rate|floatformat:0 }}%</div>
+
+            <div>
+                {% if feedback.can_next_stage %}
+                    ✅ Siap lanjut ke stage berikutnya
+                {% elif feedback.pending == 0 %}
+                    ⚠️ Butuh mastery di atas 70%
+                {% else %}
+                    ⏳ {{ feedback.pending }} soal belum selesai
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+
+    <h1 class="hanzi">
+
+        {{ feedback.hanzi|default:"-" }}
+
+    </h1>
+
+    {% if feedback.correct is False %}
+
+    <div class="section">
+
+        <h3>Jawaban Anda</h3>
+
+        <p>
+
+            {{ feedback.selected_answer|default:"-" }}
+
+        </p>
+
+    </div>
+
+    {% endif %}
+
+    <div class="section">
+
+        <h3>Pinyin</h3>
+
+        <p>
+
+            {{ feedback.correct_answer|default:"-" }}
+
+        </p>
+
+    </div>
+
+    <div class="section">
+
+        <h3>Arti</h3>
+
+        <p>
+
+            {{ feedback.meaning|default:"-" }}
+
+        </p>
+
+    </div>
+
+    <form
+        action="{% url 'next_question' %}"
+        method="GET"
+    >
+
+        <button>
+
+            Lanjut
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

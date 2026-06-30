@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}
+Quiz
+{% endblock %}
+
+{% block content %}
+
+<h2>
+
+    Stage {{ stage }} / {{ total_stage }}
+
+</h2>
+
+<div class="progress-summary">
+
+    <div class="progress-card">
+
+        <strong>Soal Muncul</strong>
+
+        <div>{{ progress.shown }}/{{ progress.total }}</div>
+
+        <div>{{ progress.shown }} soal sudah keluar</div>
+
+    </div>
+
+    <div class="progress-card">
+
+        <strong>Mastery</strong>
+
+        <div>{{ progress.rate|floatformat:0 }}%</div>
+
+        <div>
+            {% if can_next_stage %}
+                ✅ Siap lanjut ke stage berikutnya
+            {% elif progress.pending == 0 %}
+                ⚠️ Butuh mastery di atas 70%
+            {% else %}
+                ⏳ {{ progress.pending }} soal belum selesai
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+{% if request.session.stage_message %}
+
+<div class="success-box">
+
+    🎉 Selamat!
+
+    Anda berhasil membuka Stage {{ stage }}.
+
+</div>
+
+{% endif %}
+
+<hr>
+
+<h1 class="hanzi">
+
+    {{ question.hanzi }}
+
+</h1>
+
+<form
+    method="POST"
+    action="{% url 'submit_answer' %}"
+>
+
+    {% csrf_token %}
+
+    <input
+        type="hidden"
+        name="vocabulary_id"
+        value="{{ question.id }}"
+    >
+
+    <div class="choice-list">
+
+        {% for choice in question.choices %}
+
+            <button
+                type="submit"
+                name="selected_answer"
+                value="{{ choice }}"
+                class="choice-button"
+            >
+
+                {{ choice }}
+
+            </button>
+
+        {% endfor %}
+
+    </div>
+
+</form>
+
+{% endblock %}

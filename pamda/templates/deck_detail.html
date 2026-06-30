@@ -1,0 +1,123 @@
+{% extends "database/base.html" %}
+
+{% block title %}
+{{ deck.name }}
+{% endblock %}
+
+{% block content %}
+
+<h2>
+
+    {{ deck.name }}
+
+</h2>
+
+<p>
+
+    {{ total_vocab }} Vocabulary
+
+</p>
+
+<p>
+
+    {{ total_stage }} Stage
+
+</p>
+
+<hr>
+
+{% if session %}
+
+    <h3>
+
+        Progress
+
+    </h3>
+
+    <p>
+
+        Stage
+
+        {{ session.current_stage }}
+
+        /
+
+        {{ session.total_stage }}
+
+    </p>
+
+    <div class="progress-bar">
+
+        <div
+
+            class="progress-fill"
+
+            style="width:{{ progress_percent }}%;"
+
+        >
+
+        </div>
+
+    </div>
+
+    <p>
+
+        {{ progress_percent }}%
+
+    </p>
+
+    <a href="{% url 'quiz' %}">
+
+        <button>
+
+            ▶ Lanjut Belajar
+
+        </button>
+
+    </a>
+
+    <br><br>
+
+    <a href="{% url 'start_quiz' deck.id %}">
+
+        <button>
+
+            ↺ Mulai Ulang
+
+        </button>
+
+    </a>
+
+{% else %}
+
+    <p>
+
+        Belum ada progress.
+
+    </p>
+
+    <a href="{% url 'start_quiz' deck.id %}">
+
+        <button>
+
+            ▶ Mulai Belajar
+
+        </button>
+
+    </a>
+
+{% endif %}
+
+<br><br>
+
+<a href="{% url 'home' %}">
+
+    <button>
+
+        ← Kembali
+
+    </button>
+
+</a>
+
+{% endblock %}
