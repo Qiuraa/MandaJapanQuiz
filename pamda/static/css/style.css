@@ -8,17 +8,23 @@ body{
 
     font-family:Segoe UI,sans-serif;
 
-    background:#1a1a2e;
+    min-height:100vh;
 
-    color:#ffffff;
+    background:#000000;
+
+    color:#f5f5f5;
+
+    position:relative;
+
+    overflow-x:hidden;
 
 }
 
 header{
 
-    background:#0f1626;
+    background:#111111;
 
-    color:white;
+    color:#f5f5f5;
 
     padding:20px;
 
@@ -32,13 +38,15 @@ main{
 
     margin:40px auto;
 
-    background:#252d42;
+    background:rgba(27, 27, 27, 0.9);
 
     border-radius:12px;
 
     padding:30px;
 
-    box-shadow:0 5px 15px rgba(0,0,0,.3);
+    box-shadow:0 5px 20px rgba(0,0,0,.5);
+
+    backdrop-filter:blur(8px);
 
 }
 
@@ -48,9 +56,9 @@ button{
 
     border:none;
 
-    background:#2563eb;
+    background:#2f2f2f;
 
-    color:white;
+    color:#f5f5f5;
 
     padding:14px 28px;
 
@@ -70,7 +78,7 @@ button:hover{
 
 .deck-card{
 
-    border:1px solid #3d4556;
+    border:1px solid #444444;
 
     border-radius:10px;
 
@@ -78,7 +86,7 @@ button:hover{
 
     margin-bottom:20px;
 
-    background:#2a3345;
+    background:#222222;
 
 }
 
@@ -166,9 +174,9 @@ button:hover{
 
     min-width:220px;
 
-    border:1px solid #3d5580;
+    border:1px solid #444444;
 
-    background:#1e2d4a;
+    background:#222222;
 
     border-radius:10px;
 
@@ -194,11 +202,11 @@ button:hover{
 
     text-align:center;
 
-    border:1px solid #3d5580;
+    border:1px solid #555555;
 
-    background:#1e2d4a;
+    background:#292929;
 
-    color:#60a5fa;
+    color:#f5f5f5;
 
     padding:16px 18px;
 
@@ -212,9 +220,9 @@ button:hover{
 
 .choice-button:hover{
 
-    background:#2a3f5f;
+    background:#3a3a3a;
 
-    color:#93c5fd;
+    color:#ffffff;
 
 }
 
