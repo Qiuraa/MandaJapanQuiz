@@ -1,4 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    preferred_language = models.CharField(max_length=20, default="mandarin")
+
+    def __str__(self):
+        return self.user.username
+
 
 class Deck(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -36,9 +46,18 @@ class Vocabulary(models.Model):
 
 class LearningSession(models.Model):
 
-    deck = models.OneToOneField(
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="learning_sessions",
+        null=True,
+        blank=True,
+    )
+
+    deck = models.ForeignKey(
         Deck,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="learning_sessions"
     )
 
     current_stage = models.PositiveIntegerField(default=1)

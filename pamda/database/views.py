@@ -1,5 +1,8 @@
 from math import ceil
 
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import (
     render,
     redirect,
@@ -19,14 +22,42 @@ from database.engine.mastery_calculator import MasteryCalculator
 def home(request):
 
     decks = Deck.objects.all()
+    return render(request, "home.html", {"decks": decks, "user": request.user})
 
-    return render(
-        request,
-        "home.html",
-        {
-            "decks": decks
-        }
-    )
+
+def language_choice(request):
+    return render(request, "language_choice.html")
+
+
+def register_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
+        if username and password:
+            if User.objects.filter(username=username).exists():
+                return render(request, "register.html", {"error": "Username sudah dipakai."})
+            user = User.objects.create_user(username=username, password=password)
+            login(request, user)
+            return redirect("home")
+    return render(request, "register.html")
+
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("home")
+        return render(request, "login.html", {"error": "Username atau password salah."})
+    return render(request, "login.html")
+
+
+def logout_view(request):
+    logout(request)
+    request.session.flush()
+    return redirect("home")
 
 
 def deck_detail(request, deck_id):
@@ -42,9 +73,14 @@ def deck_detail(request, deck_id):
         total_vocab / deck.stage_size
     )
 
-    session = LearningSession.objects.filter(
-        deck=deck
-    ).first()
+    user_session = None
+    if request.user.is_authenticated:
+        user_session = LearningSession.objects.filter(
+            user=request.user,
+            deck=deck
+        ).first()
+
+    session = user_session
 
     progress_percent = 0
 
@@ -87,13 +123,19 @@ def start_quiz(request, deck_id):
         id=deck_id
     )
 
-    generator = StageGenerator(deck)
+    if request.method == "POST":
+        mode = request.POST.get("mode", "choice")
+        request.session["quiz_mode"] = mode
+
+    generator = StageGenerator(deck, user=request.user if request.user.is_authenticated else None)
 
     result = generator.generate()
+    session = result["session"]
+    if request.user.is_authenticated:
+        session.user = request.user
+        session.save(update_fields=["user"])
 
-    request.session["session_id"] = result[
-        "session"
-    ].id
+    request.session["session_id"] = session.id
 
     return redirect("quiz")
 
@@ -111,6 +153,8 @@ def quiz(request):
     session = LearningSession.objects.get(
         id=session_id
     )
+
+    quiz_mode = request.session.get("quiz_mode", "choice")
 
     engine = QuizEngine(session)
 
@@ -142,6 +186,7 @@ def quiz(request):
             "total_stage": session.total_stage,
             "progress": progress,
             "can_next_stage": mastery.can_next_stage(),
+            "quiz_mode": quiz_mode,
 
         }
 
@@ -185,9 +230,12 @@ def submit_answer(request):
         }
         return redirect("feedback")
 
+    quiz_mode = request.session.get("quiz_mode", "choice")
+
     result = engine.submit_answer(
         vocabulary_id,
         selected_answer,
+        quiz_mode=quiz_mode,
     )
 
     mastery = MasteryCalculator(session)

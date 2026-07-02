@@ -16,11 +16,11 @@ Quiz
 
     <div class="progress-card">
 
-        <strong>Shown</strong>
+        <strong>Soal Muncul</strong>
 
         <div>{{ progress.shown }}/{{ progress.total }}</div>
 
-        <div>{{ progress.shown }} items shown</div>
+        <div>{{ progress.shown }} soal sudah keluar</div>
 
     </div>
 
@@ -32,11 +32,11 @@ Quiz
 
         <div>
             {% if can_next_stage %}
-                ✅ Ready to advance to the next stage
+                ✅ Siap lanjut ke stage berikutnya
             {% elif progress.pending == 0 %}
-                ⚠️ Need mastery above target
+                ⚠️ Butuh mastery di atas 70%
             {% else %}
-                ⏳ {{ progress.pending }} items pending
+                ⏳ {{ progress.pending }} soal belum selesai
             {% endif %}
         </div>
 
@@ -48,9 +48,9 @@ Quiz
 
 <div class="success-box">
 
-    🎉 Congratulations!
+    🎉 Selamat!
 
-    You unlocked Stage {{ stage }}.
+    Anda berhasil membuka Stage {{ stage }}.
 
 </div>
 
@@ -63,6 +63,10 @@ Quiz
     {{ question.hanzi }}
 
 </h1>
+
+<div class="quiz-actions-top">
+    <a href="{% url 'home' %}"><button type="button">⬅ Keluar & Simpan</button></a>
+</div>
 
 <form
     method="POST"
@@ -77,24 +81,48 @@ Quiz
         value="{{ question.id }}"
     >
 
-    <div class="choice-list">
+    {% if quiz_mode == 'keyboard' %}
 
-        {% for choice in question.choices %}
-
-            <button
-                type="submit"
+        <div class="keyboard-answer">
+            <label for="selected_answer">Jawaban Anda</label>
+            <input
+                type="text"
+                id="selected_answer"
                 name="selected_answer"
-                value="{{ choice }}"
-                class="choice-button"
+                class="keyboard-input"
+                placeholder="Ketik jawabanmu di sini"
+                autocomplete="off"
+                autocapitalize="none"
+                autocorrect="off"
+                spellcheck="false"
+                autofocus
+                required
             >
+            <button type="submit" class="submit-button">Jawab</button>
+        </div>
 
-                {{ choice }}
+    {% else %}
 
-            </button>
+        <div class="choice-list">
 
-        {% endfor %}
+            {% for choice in question.choices %}
 
-    </div>
+                <button
+                    type="submit"
+                    name="selected_answer"
+                    value="{{ choice }}"
+                    class="choice-button"
+                >
+
+                    {{ choice }}
+
+                </button>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
 
 </form>
 

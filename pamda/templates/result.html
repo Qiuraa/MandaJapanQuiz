@@ -27,12 +27,18 @@ Result
 			<div>{{ rate }}%</div>
 		</div>
 
+		<div class="stat">
+			<strong>Progress</strong>
+			<div>{{ mastered }} kata dikuasai dari {{ total }}</div>
+		</div>
+
 	</div>
 
 	<div class="actions">
 
 		<form action="{% url 'start_quiz' deck_id=deck_id %}" method="POST">
 			{% csrf_token %}
+			<input type="hidden" name="mode" value="choice">
 			<button type="submit">Restart Deck</button>
 		</form>
 

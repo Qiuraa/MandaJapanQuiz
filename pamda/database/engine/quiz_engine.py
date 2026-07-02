@@ -4,6 +4,9 @@ from database.engine.question_generator import QuestionGenerator
 from database.engine.progress_manager import ProgressManager
 from database.engine.mastery_calculator import MasteryCalculator
 
+import re
+import unicodedata
+
 from database.models import Vocabulary
 
 
@@ -76,20 +79,24 @@ class QuizEngine:
     def submit_answer(
         self,
         vocabulary_id,
-        selected_answer
+        selected_answer,
+        quiz_mode="choice"
     ):
 
         vocabulary = Vocabulary.objects.get(
             id=vocabulary_id
         )
 
-        normalized_selected = (
-            selected_answer or ""
-        ).strip().casefold()
-
-        normalized_correct = (
-            vocabulary.pinyin
-        ).strip().casefold()
+        normalized_selected = self._normalize_answer(
+            selected_answer,
+            quiz_mode,
+            vocabulary
+        )
+        normalized_correct = self._normalize_answer(
+            vocabulary.pinyin,
+            quiz_mode,
+            vocabulary
+        )
 
         correct = (
             normalized_selected ==
@@ -122,5 +129,64 @@ class QuizEngine:
         result["correct_answer"] = vocabulary.pinyin
         result["meaning"] = vocabulary.meaning
         result["stage_up"] = stage_up
+        result["quiz_mode"] = quiz_mode
 
         return result
+
+    def _normalize_answer(self, value, quiz_mode, vocabulary):
+        if not value:
+            return ""
+
+        normalized = str(value).strip()
+
+        if quiz_mode == "keyboard":
+            normalized = normalized.casefold()
+            normalized = normalized.replace(" ", "")
+            normalized = normalized.replace("-", "")
+            normalized = normalized.replace("・", "")
+
+            normalized = normalized.replace("～", "")
+
+            # a
+            normalized = normalized.replace("ā", "a")
+            normalized = normalized.replace("á", "a")
+            normalized = normalized.replace("ǎ", "a")
+            normalized = normalized.replace("à", "a")
+
+            # e
+            normalized = normalized.replace("ē", "e")
+            normalized = normalized.replace("é", "e")
+            normalized = normalized.replace("ě", "e")
+            normalized = normalized.replace("è", "e")
+
+            # i
+            normalized = normalized.replace("ī", "i")
+            normalized = normalized.replace("í", "i")
+            normalized = normalized.replace("ǐ", "i")
+            normalized = normalized.replace("ì", "i")
+
+            # o
+            normalized = normalized.replace("ō", "o")
+            normalized = normalized.replace("ó", "o")
+            normalized = normalized.replace("ǒ", "o")
+            normalized = normalized.replace("ò", "o")
+
+            # u
+            normalized = normalized.replace("ū", "u")
+            normalized = normalized.replace("ú", "u")
+            normalized = normalized.replace("ǔ", "u")
+            normalized = normalized.replace("ù", "u")
+
+            # ü -> v
+            normalized = normalized.replace("ü", "v")
+            normalized = normalized.replace("ǖ", "v")
+            normalized = normalized.replace("ǘ", "v")
+            normalized = normalized.replace("ǚ", "v")
+            normalized = normalized.replace("ǜ", "v")
+            # normalized = normalized.replace("ゃ", "や")
+            # normalized = normalized.replace("ゅ", "ゆ")
+            # normalized = normalized.replace("ょ", "よ")
+
+            return normalized
+
+        return normalized.casefold().replace(" ", "")

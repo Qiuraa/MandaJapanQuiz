@@ -10,8 +10,9 @@ from database.models import (
 
 class StageGenerator:
 
-    def __init__(self, deck):
+    def __init__(self, deck, user=None):
         self.deck = deck
+        self.user = user
 
     def generate(self):
         """
@@ -27,14 +28,22 @@ class StageGenerator:
         7. Buat Progress
         """
 
-        # Hapus session lama jika ada
-        LearningSession.objects.filter(
-            deck=self.deck
-        ).delete()
+        # Hapus session lama milik user yang sama jika ada
+        if hasattr(self, "user") and self.user is not None:
+            LearningSession.objects.filter(
+                deck=self.deck,
+                user=self.user
+            ).delete()
+        else:
+            LearningSession.objects.filter(
+                deck=self.deck,
+                user__isnull=True
+            ).delete()
 
         # Buat session baru
         session = LearningSession.objects.create(
-            deck=self.deck
+            deck=self.deck,
+            user=getattr(self, "user", None)
         )
 
         # Ambil seluruh vocabulary

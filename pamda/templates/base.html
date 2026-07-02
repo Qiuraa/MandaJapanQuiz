@@ -34,6 +34,15 @@
 
     </h1>
 
+    <div class="header-actions">
+        {% if user.is_authenticated %}
+            <span>Halo, {{ user.username }}</span>
+            <a href="{% url 'logout' %}"><button class="header-button">Logout</button></a>
+        {% else %}
+            <a href="{% url 'login' %}"><button class="header-button">Login</button></a>
+        {% endif %}
+    </div>
+
 </header>
 
 <main>

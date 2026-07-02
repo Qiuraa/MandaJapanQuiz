@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Pilih Bahasa
+{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <h1>Pilih Bahasa Belajar</h1>
+    <p>Pilih bahasa yang ingin kamu pelajari dulu.</p>
+    <div class="language-grid">
+        <a href="{% url 'register' %}" class="language-card">
+            <h3>Mandarin</h3>
+            <p>Masuk ke deck HSK</p>
+        </a>
+        <a href="{% url 'register' %}" class="language-card">
+            <h3>Jepang</h3>
+            <p>Masuk ke deck N</p>
+        </a>
+    </div>
+    <div class="auth-actions">
+        <a href="{% url 'login' %}"><button>Sudah punya akun?</button></a>
+    </div>
+</div>
+{% endblock %}

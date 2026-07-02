@@ -96,15 +96,20 @@
 
     </p>
 
-    <a href="{% url 'start_quiz' deck.id %}">
-
-        <button>
-
-            ▶ Start Learning
-
-        </button>
-
-    </a>
+    <form action="{% url 'start_quiz' deck.id %}" method="POST">
+        {% csrf_token %}
+        <div class="mode-selector">
+            <label>
+                <input type="radio" name="mode" value="choice" checked>
+                Pilihan tombol
+            </label>
+            <label>
+                <input type="radio" name="mode" value="keyboard">
+                Input keyboard
+            </label>
+        </div>
+        <button type="submit">▶ Start Learning</button>
+    </form>
 
 {% endif %}
 

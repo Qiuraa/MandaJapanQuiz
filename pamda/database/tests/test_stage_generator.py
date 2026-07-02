@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 
 from database.models import (
@@ -59,5 +60,17 @@ class StageGeneratorTest(TestCase):
         self.assertEqual(
             result["total_vocabulary"],
             100
+        )
+
+    def test_generate_keeps_other_users_sessions_for_same_deck(self):
+        other_user = User.objects.create_user(username="other", password="secret")
+        LearningSession.objects.create(deck=self.deck, user=other_user)
+
+        generator = StageGenerator(self.deck)
+        generator.generate()
+
+        self.assertEqual(
+            LearningSession.objects.filter(user=other_user).count(),
+            1
         )
 
